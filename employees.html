@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee List</title>
+  <style>
+  
+.container {
+  padding: 20px;
+  text-align: center;
+}
+
+
+#employeeTable {
+  border-collapse: collapse;
+  width: 80%; 
+  margin: auto; 
+  border-radius: 10px; 
+  overflow: hidden; 
+}
+
+#employeeTable th {
+  padding: 15px; 
+  background-color: #f2f2f2;
+}
+
+
+#employeeTable td {
+  padding: 10px; 
+}
+
+
+tr:nth-child(odd) {
+  background-color: #f8f8f8;
+}
+
+
+.senior {
+  color: green;
+}
+
+.junior {
+  color: blue;
+}
+
+
+.highlight:hover {
+  background-color: yellow;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+    tr:nth-child(odd) {
+      background-color: #f2f2f2;
+    }
+
+  
+    .senior {
+      color: green;
+    }
+
+    .junior {
+      color: blue;
+    }
+
+  
+    .highlight:hover {
+      background-color: yellow;
+    }
+
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 40px;
+  border: 1px solid #888;
+  width: 300px; 
+  height: 300px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: center; 
+}
+
+#employeeDetails {
+  font-size: 20px; 
+  text-align: center; 
+}
+
+#employeeDetails span {
+  font-size: 20px; 
+  display: flex; 
+  justify-content: space-between; 
+  width: 100%; 
+}
+
+nav {
+  background-color: #F33A6A; 
+  padding: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white; 
+  padding: 10px 20px;
+  font-weight: bold; 
+  font-size: 18px; 
+}
+
+nav ul li:not(:last-child) {
+  margin-right: 20px; 
+}
+
+#addEmployeeButton {
+  background-color: #F33A6A; 
+  color: white; 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 20px; 
+  cursor: pointer; 
+  margin-bottom: 20px; 
+}
+
+
+#addEmployeeButton:hover {
+  background-color: #D22F5B; 
+}
+
+  
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+        <ul>
+          <li><a href="./index.html" onclick="showHome()">Home</a></li>
+          <li><a href="#" onclick="showEmployees()">Employees</a></li>
+        </ul>
+      </nav>
+    <h1>Employee List</h1>
+    <a id="addEmployeeButton" href="addEmployee.html">Add Employee</a>
+    <div style="margin-bottom: 30px;"></div>
+        
+    <table id="employeeTable">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Department</th>
+          <th>Salary</th>
+          <th>Position</th>
+        </tr>
+      </thead>
+      <tbody id="employeeTableBody">
+       <!-- <tr>
+          <td class="highlight">1</td>
+          <td class="highlight">Sam</td>
+          <td class="highlight">Adam</td>
+          <td>IT</td>
+          <td>$100000.00</td>
+          <td>Senior</td>
+        </tr>
+        <tr>
+          <td class="highlight">2</td>
+          <td class="highlight">John</td>
+          <td class="highlight">Jacob</td>
+          <td>Sales</td>
+          <td>$90000.00</td>
+          <td>Junior</td>
+        </tr>-->
+      </tbody>
+    </table>
+  </div>
+
+
+  <div id="employeeDetailsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Employee Details</h2>
+      <p id="employeeDetails"></p>
+    </div>
+  </div>
+
+  <script>
+    const employees = [
+      { id: 1, firstName: 'Sam', lastName: 'Adam', department: 'IT', age: 45 },
+      { id: 2, firstName: 'John', lastName: 'Jacob', department: 'Sales', age: 35 }
+    ];
+
+    employees.forEach(employee => {
+      const salary = employee.age > 40 ? employee.age * 10 + 50000 : employee.age * 5 + 50000;
+      const position = employee.age > 40 ? 'Senior' : 'Junior';
+
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+          <td class="highlight">${employee.id}</td>
+          <td class="highlight">${employee.firstName}</td>
+          <td class="highlight">${employee.lastName}</td>
+          <td>${employee.department}</td>
+          <td>$${salary.toFixed(2)}</td>
+          <td class="${position.toLowerCase()}">${position}</td>
+      `;
+      document.getElementById('employeeTableBody').appendChild(newRow);
+    });
+
+    // Get all cells with the class "highlight"
+    const highlightedCells = document.querySelectorAll('.highlight');
+
+    // Add event listener to each highlighted cell for hover effect
+    highlightedCells.forEach(cell => {
+      cell.addEventListener('mouseover', () => {
+        cell.classList.add('highlighted');
+      });
+      cell.addEventListener('mouseout', () => {
+        cell.classList.remove('highlighted');
+      });
+      cell.addEventListener('click', () => {
+        const id = cell.parentElement.querySelector('td').innerText;
+        const firstName = cell.parentElement.querySelector('td:nth-child(2)').innerText;
+        const lastName = cell.parentElement.querySelector('td:nth-child(3)').innerText;
+        showEmployeeDetails(id, firstName, lastName);
+      });
+    });
+
+    // Function to disp lay employee details on click
+    function showEmployeeDetails(id, firstName, lastName) {
+      const modal = document.getElementById('employeeDetailsModal');
+      const detailsParagraph = document.getElementById('employeeDetails');
+      detailsParagraph.innerHTML = `ID: ${id}<br>First Name: ${firstName}<br>Last Name: ${lastName}`;
+      modal.style.display = 'block';
+    }
+
+    // Close the modal when the close button is clicked
+    const closeButton = document.querySelector('.close');
+    closeButton.addEventListener('click', () => {
+      const modal = document.getElementById('employeeDetailsModal');
+      modal.style.display = 'none';
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
